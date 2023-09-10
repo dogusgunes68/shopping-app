@@ -2,34 +2,45 @@
   "name": "shopping-app",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "migrate": "npx knex migrate:latest --knexfile database/knexfile.js",
+    "migrate": "npx knex migrate:latest --knexfile src/database/knexfile.ts",
     "build": "npx tsc",
-    "seed": "npx knex seed:run --knexfile database/knexfile.js",
-    "start": "node index.js",
-    "dev": "tsnd --respawn index.ts"
+    "seed": "npx knex seed:run --knexfile src/database/knexfile.ts",
+    "start": "tsc && node dist/index.js",
+    "dev": "tsc && nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.4",
     "@types/node": "^20.6.0",
+    "@types/supertest": "^2.0.12",
+    "@types/yup": "^0.32.0",
     "concurrently": "^8.2.1",
+    "jest": "^29.6.4",
     "nodemon": "^3.0.1",
     "sequelize-cli": "^6.6.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.14",
+    "@types/knex": "^0.16.1",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
+    "joi": "^17.10.1",
     "knex": "^2.5.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.33.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "yup": "^1.2.0"
   }
 }

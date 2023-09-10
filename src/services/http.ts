@@ -1,0 +1,25 @@
+import { isBoolean, isObject, isString } from "../utils/helper"
+
+export function buildResponse(options: any){
+
+    const response = {
+        success: true,
+        message: null,
+        data : {}
+    }
+
+    if(isObject(options)){
+        if(isBoolean(options.success)){
+            response.success = options.success;
+        }
+        if(isString(options.message)){
+            response.message = options.message;
+        }
+
+        if(isObject(options.data)){
+            response.data = options.data;
+        }
+    }
+
+    return response;
+}

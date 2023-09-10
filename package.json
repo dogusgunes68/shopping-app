@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "migrate": "npx knex migrate:latest --knexfile database/knexfile.js",
     "build": "npx tsc",
+    "seed": "npx knex seed:run --knexfile database/knexfile.js",
     "start": "node index.js",
-    "dev": "nodemon index.ts"
+    "dev": "tsnd --respawn index.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +24,9 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.14",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
+    "knex": "^2.5.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.33.0",

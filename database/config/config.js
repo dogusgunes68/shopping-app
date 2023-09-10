@@ -1,25 +1,25 @@
+import { user, password, database, host } from "../../config/database";
 
-
-export default{
-  "development": {
-    "username": "root",
-    "password": "root",
-    "database": "shopping",
-    "host": "localhost",
-    "dialect": "postgres"
+module.exports = {
+  development: {
+    username: user,
+    password: password,
+    database: database,
+    host: host,
+    dialect: "postgres",
   },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+  test: {
+    username: "root",
+    password: null,
+    database: "database_test",
+    host: "127.0.0.1",
+    dialect: "mysql",
   },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
-}
+  production: {
+    username: "root",
+    password: null,
+    database: "database_production",
+    host: "127.0.0.1",
+    dialect: "mysql",
+  },
+};

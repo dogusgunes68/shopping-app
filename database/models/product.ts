@@ -66,6 +66,7 @@ export const ProductMap = (sequelize: Sequelize) => {
   }, {
     sequelize,
     tableName: 'products',
+    modelName: "Product",
     timestamps: false
   });
   Product.sync();

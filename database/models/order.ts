@@ -47,6 +47,7 @@ export const OrderMap = (sequelize: Sequelize) => {
   }, {
     sequelize,
     tableName: 'orders',
+    modelName: "Order",
     timestamps: false
   });
   Order.sync();

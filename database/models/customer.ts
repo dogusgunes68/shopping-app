@@ -81,6 +81,7 @@ export const CustomerMap = (sequelize: Sequelize) => {
   }, {
     sequelize,
     tableName: 'customers',
+    modelName: "Customer",
     timestamps: false
   });
   Customer.sync();

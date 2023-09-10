@@ -44,6 +44,7 @@ export const RoleMap = (sequelize: Sequelize) => {
   }, {
     sequelize,
     tableName: 'roles',
+    modelName: "Role",
     timestamps: false
   });
   Role.sync();

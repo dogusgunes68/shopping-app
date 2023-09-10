@@ -9,7 +9,7 @@ function apiErrorHandler(err, req, res, next) {
             success: false,
             message: err.message,
         });
-        return res.status(err.code).json(response);
+        return res.status(400).json(response);
     }
     const response = (0, http_1.buildResponse)({
         success: false,

@@ -9,7 +9,7 @@ export function requireCustomer(req: Request, res: Response, next: NextFunction)
             success: false,
             message: "You must authorize with customer to create a new order."
         });
-        return res.json(response);
+        return res.status(401).json(response);
     }
 
 }

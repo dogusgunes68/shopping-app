@@ -21,7 +21,7 @@ function requireAdmin(req, res, next) {
                 success: false,
                 message: "You must authenticate with admin role to create a new customer."
             });
-            return res.json(response);
+            return res.status(401).json(response);
         }
     });
 }

@@ -9,6 +9,6 @@ export async function requireAdmin(req: Request, res: Response, next: NextFuncti
             success:false,
             message: "You must authenticate with admin role to create a new customer."
         })
-        return res.json(response);
+        return res.status(401).json(response);
     }
 }

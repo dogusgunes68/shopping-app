@@ -25,5 +25,7 @@ app.use("/orders", orderRouter);
 
 app.listen(port, function(){
   console.log("listening on port", port);
-})
+});
+
+export default app;
 

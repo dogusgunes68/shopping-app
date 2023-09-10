@@ -23,3 +23,4 @@ app.use("/orders", order_1.default);
 app.listen(port, function () {
     console.log("listening on port", port);
 });
+exports.default = app;

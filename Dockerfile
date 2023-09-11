@@ -1,8 +1,8 @@
 FROM node:14
 WORKDIR /app
-COPY ["package.json", "package-lock.json", "tsconfig.json", ".env", "./"]
-COPY ./src ./src
+COPY package*.json ./
+COPY tsconfig.json ./
 RUN npm install
-RUN npm install db-migrate-pg
-RUN git clone https://github.com/vishnubob/wait-for-it.git
-CMD npm start
+COPY . .
+EXPOSE 4001
+CMD ["npm", "start"]

@@ -1,8 +1,14 @@
 import { Knex } from "knex";
 
-
 export async function up(knex: Knex): Promise<void> {
     return await knex.schema
+    .createTable("admin", (table) => {
+      table.increments("id").primary();
+      table.string("email").notNullable().unique();
+      table.string("password").notNullable();
+      table.string("role").defaultTo("admin");
+      table.timestamps(true, true);
+    })
     .createTable("customer", (table) => {
       table.increments("id").primary();
       table.string("name").notNullable();

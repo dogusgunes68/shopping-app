@@ -13,6 +13,13 @@ exports.down = exports.up = void 0;
 function up(knex) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield knex.schema
+            .createTable("admin", (table) => {
+            table.increments("id").primary();
+            table.string("email").notNullable().unique();
+            table.string("password").notNullable();
+            table.string("role").defaultTo("admin");
+            table.timestamps(true, true);
+        })
             .createTable("customer", (table) => {
             table.increments("id").primary();
             table.string("name").notNullable();

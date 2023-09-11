@@ -1,38 +1,31 @@
-version: "3.8"
+version: "3.7"
 services:
-  shopping-api:
-    container_name: shopping-api
-    restart: always
-    build: .
-    ports:
-      - ${PORT}:${PORT}
-    depends_on:
-      - db
-    volumes:
-      - .:/usr/src/app
-
   db:
     container_name: postgres
     image: postgres
+    restart: always
     ports:
-      - "5432:${DB_PORT}"
-    volumes:
-      - data:/data/db
+      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
+    networks:
+      - net
 
-  migraton:
-    build:
-      context: .
-    command: ["./wait-for-it/wait-for-it.sh", "db:5432", "npm", "start"]
-    links:
-      - db
+  shopping-api:
+    container_name: shopping-api
+    build: .
+    ports:
+      - 4001:4001
     depends_on:
       - db
-    env_file: "./.env"
-    environment:
-      - DB_HOST= localhost
+    networks:
+      - net
+
 volumes:
   data: {}
+
+networks:
+  net:
+    driver: bridge

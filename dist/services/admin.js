@@ -12,38 +12,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPasswordForCustomer = exports.getCustomer = exports.createCustomer = void 0;
+exports.checkPasswordForAdmin = exports.getAdmin = exports.createAdmin = void 0;
 const db_1 = __importDefault(require("../database/db"));
-const helper_1 = require("../utils/helper");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-function createCustomer(customer) {
+const helper_1 = require("../utils/helper");
+function createAdmin(admin) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { name, surname, email, password, role } = customer;
+        const { email, password, role } = admin;
         const hashedPass = yield (0, helper_1.hashPassword)(password);
-        const [id] = yield (0, db_1.default)("customer")
-            .insert({
-            name,
-            surname,
+        const [id] = yield (0, db_1.default)("admin").insert({
             email,
             password: hashedPass,
-            role,
-        })
-            .returning("id");
+            role
+        }).returning("id");
         return id;
     });
 }
-exports.createCustomer = createCustomer;
-function getCustomer(email) {
+exports.createAdmin = createAdmin;
+function getAdmin(email) {
     return __awaiter(this, void 0, void 0, function* () {
-        const [customer] = yield (0, db_1.default)("customer").select("*").where("email", email);
-        return customer;
+        const [admin] = yield (0, db_1.default)("admin").select("*").where("email", email);
+        return admin;
     });
 }
-exports.getCustomer = getCustomer;
-function checkPasswordForCustomer(password, email) {
+exports.getAdmin = getAdmin;
+function checkPasswordForAdmin(password, email) {
     return __awaiter(this, void 0, void 0, function* () {
-        const customer = yield getCustomer(email);
-        return yield bcrypt_1.default.compare(password, customer.password);
+        const admin = yield getAdmin(email);
+        return yield bcrypt_1.default.compare(password, admin.password);
     });
 }
-exports.checkPasswordForCustomer = checkPasswordForCustomer;
+exports.checkPasswordForAdmin = checkPasswordForAdmin;

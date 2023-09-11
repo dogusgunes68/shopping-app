@@ -1,9 +1,5 @@
 import db from "../database/db";
-interface Product {
-    name: string;
-    price: number;
-    description: string;
-}
+import { Product } from "../models/product";
 
 export async function createProduct(product: Product): Promise<number[]> {
 

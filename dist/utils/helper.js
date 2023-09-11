@@ -12,8 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isBoolean = exports.isString = exports.isObject = exports.hashPassword = void 0;
+exports.isBoolean = exports.isString = exports.isObject = exports.verifyToken = exports.hashPassword = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const auth_1 = __importDefault(require("../config/auth"));
 const hashPassword = function (password) {
     return __awaiter(this, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
@@ -21,6 +23,17 @@ const hashPassword = function (password) {
     });
 };
 exports.hashPassword = hashPassword;
+function verifyToken(token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        jsonwebtoken_1.default.verify(token, auth_1.default.jwt_secret, function (err, decoded) {
+            if (err) {
+                return null;
+            }
+            return decoded;
+        });
+    });
+}
+exports.verifyToken = verifyToken;
 function isObject(obj) {
     return (obj !== null && obj !== undefined && typeof obj === "object" && !Array.isArray(obj));
 }

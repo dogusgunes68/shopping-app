@@ -23,3 +23,27 @@ export function buildResponse(options: any){
 
     return response;
 }
+
+export function buildAuthResponse(options: any){
+
+    const response = {
+        success: true,
+        message: null,
+        token: null
+    }
+
+    if(isObject(options)){
+        if(isBoolean(options.success)){
+            response.success = options.success;
+        }
+        if(isString(options.message)){
+            response.message = options.message;
+        }
+
+        if(isString(options.data)){
+            response.token = options.token;
+        }
+    }
+
+    return response;
+}

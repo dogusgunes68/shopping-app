@@ -24,11 +24,18 @@ export async function createProductController(req: Request, res: Response): Prom
 
 export async function updateProductController(req: Request, res: Response): Promise<void> {
     try {
-        const count = await updateProduct(req.body.id, req.body.changes);
-        const response = buildResponse({
-            message: `${count} row updated successfully`,
-        })
-        res.status(200).json(response);
+        const count = await updateProduct(parseInt(req.params.id), req.body.changes);
+        if (count === 0) {
+            const response = buildResponse({
+                message: "Not found",
+            })
+            res.status(404).json(response);
+        }else {
+            const response = buildResponse({
+                message: `${count} row updated successfully`,
+            })
+            res.status(200).json(response);
+        }
     } catch (error: any) {
         const response = buildResponse({
             success: false,

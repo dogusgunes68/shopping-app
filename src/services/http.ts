@@ -1,8 +1,10 @@
+import { ResponseModel } from "../models/response";
+import { AuthResponse } from "../models/response-auth";
 import { isBoolean, isObject, isString } from "../utils/helper"
 
-export function buildResponse(options: any){
+export function buildResponse(options: any): ResponseModel{
 
-    const response = {
+    const response: ResponseModel = {
         success: true,
         message: null,
         data : {}
@@ -24,9 +26,9 @@ export function buildResponse(options: any){
     return response;
 }
 
-export function buildAuthResponse(options: any){
+export function buildAuthResponse(options: any): AuthResponse{
 
-    const response = {
+    const response: AuthResponse = {
         success: true,
         message: null,
         token: null

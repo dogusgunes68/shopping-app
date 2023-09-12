@@ -5,6 +5,6 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/",validateBody(productValidation) ,createProductController);
-router.put("/",updateProductController);
+router.put("/:id",updateProductController);
 
 export default router;

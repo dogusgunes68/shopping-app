@@ -48,13 +48,21 @@ export async function getDetailsOfOrderController(req: Request, res: Response): 
   try {
       const id = req.headers.id;
       const order = await getDetailsOfOrder(parseInt(req.params.id), id);
-      const response = buildResponse({
+      if(!order){
+        res.status(404).json(buildResponse({
+          success: true,
+          message:"Order not found"
+        }));
+      }else {
+        const response = buildResponse({
           message: `Order with id ${req.params.id} retrieved successfully`,
           data:{
               order,
           }
-      });
-      res.status(200).json(response);
+        });
+        res.status(200).json(response);
+      }
+   
   } catch (error: any) {
       const response = buildResponse({
           success: false,

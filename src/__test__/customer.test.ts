@@ -1,41 +1,51 @@
 import request from 'supertest';
-import app from '../index'; // Express uygulamanızın yolu
-import { customerValidation } from '../validation/validate-customer-body'; // Doğrulama şemanızın yolu
+import { Customer } from '../models/customer';
+import createServer from '../server';
 
-describe('Customer API', () => {
-  it('should create a new customer', async () => {
-    const newCustomer = {
-      name: 'test',
-      surname: 'test',
-      email: 'test@mail.com',
-      password: '123456789',
-      role: 'user',
-    };
+const app = createServer();
 
-    const response = await request(app)
-      .post('/customers')
-      .send(newCustomer);
+describe('customer', () => {
 
-    expect(response.status).toBe(201);
-    expect(response.body.success).toBe(true);
-    expect(response.body.message).toBe('New customer created');
-    expect(response.body.data.customerId).toBeDefined();
+  // Create a new customer
+  describe('create customer', () => {
+    describe("bad request", ()=> {
+      it("should return a 400 code", async () => {
+        await request(app).post("/customers").expect(400);
+      });
+    });
+
+    describe("access denied", () => {
+      it("should return a 403 code", async () => {
+        const customer: Customer = {
+          name: "deneme",
+          surname: "deneme",
+          email:"deneme@example.com",
+          password:"123456789",
+          role: "user"
+        }
+        await request(app).post("/customers").send(customer).expect(403);
+      });
+    });
   });
 
-  it('should require admin authentication', async () => {
-    const newCustomer = {
-      name: 'test',
-      surname: 'test',
-      email: 'test@mail.com',
-      password: '123456789',
-      role: 'user',
-    };
+  // List of orders
 
-    const response = await request(app)
-      .post('/customers')
-      .send(newCustomer);
+  describe("list orders", () => {
+    describe("access denied", () => {
+      it("should return a 403 code", async () => {
+        await request(app).get("/customers/customer-orders").expect(403);
+      });
+    });
+  });
 
-    expect(response.status).toBe(401);
+  // Get Details of Order
+  describe("get order details", () => {
+    describe("access denied", () => {
+      it("should return a 403 code", async () => {
+        const orderId = 1;
+        await request(app).get(`/customers/customer-order/${orderId}`).expect(403);
+      });
+    });
   });
 
 });

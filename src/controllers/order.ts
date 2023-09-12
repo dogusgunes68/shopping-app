@@ -16,8 +16,8 @@ export async function createOrderController(req: Request, res: Response): Promis
 
         const log: Log ={
             user_id: req.headers.id,
-            request_type: "GET",
-            request_url: "/orders/customer-orders",
+            request_type: "POST",
+            request_url: "/orders",
             date: new Date()
           }
         await createLog(log);

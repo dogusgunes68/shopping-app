@@ -74,7 +74,7 @@ export async function getDetailsOfOrderController(req: Request, res: Response): 
         const log: Log ={
           user_id: id,
           request_type: "GET",
-          request_url: "/orders/customer-order/:id",
+          request_url: `/orders/customer-order/${req.params.id}`,
           date: new Date()
         }
         await createLog(log);

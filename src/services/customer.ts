@@ -36,8 +36,8 @@ export async function listOrders(customerId: any): Promise<Order[]> {
   return rows;
 }
 
-export async function getDetailsOfOrder(orderId: number, customer_id: number): Promise<Order[]> {
+export async function getDetailsOfOrder(orderId: number, customer_id: any): Promise<Order> {
   const order: Order[] = await db("order").select("*").where("id", orderId).andWhere("customer_id", customer_id);
-  return order;
+  return order[0];
 }
 

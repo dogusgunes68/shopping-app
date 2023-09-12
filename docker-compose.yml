@@ -1,30 +1,45 @@
 version: "3.7"
 services:
   db:
-    container_name: postgres
+    container_name: postgresql
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: shopping
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     networks:
       - net
 
   shopping-api:
     container_name: shopping-api
-    build: .
+    build:
+      context: .
     ports:
-      - 4001:4001
+      - "4001:4001"
+    volumes:
+      - ./src/database/migrations:/app/migrations
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - net
 
 volumes:
-  data: {}
+  pg_data: {}
 
 networks:
   net:

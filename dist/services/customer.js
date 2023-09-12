@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPasswordForCustomer = exports.getCustomer = exports.createCustomer = void 0;
+exports.getDetailsOfOrder = exports.listOrders = exports.checkPasswordForCustomer = exports.getCustomer = exports.createCustomer = void 0;
 const db_1 = __importDefault(require("../database/db"));
 const helper_1 = require("../utils/helper");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -47,3 +47,17 @@ function checkPasswordForCustomer(password, email) {
     });
 }
 exports.checkPasswordForCustomer = checkPasswordForCustomer;
+function listOrders(customerId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const rows = yield (0, db_1.default)("order").select("*").where("customer_id", customerId);
+        return rows;
+    });
+}
+exports.listOrders = listOrders;
+function getDetailsOfOrder(orderId, customer_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const order = yield (0, db_1.default)("order").select("*").where("id", orderId).andWhere("customer_id", customer_id);
+        return order;
+    });
+}
+exports.getDetailsOfOrder = getDetailsOfOrder;

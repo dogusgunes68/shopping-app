@@ -13,8 +13,10 @@ export async function loginCustomer(customer: Customer){
     const { email, password } = customer;
     const givenCustomer = await getCustomer(email);
     const correctPassword = await checkPasswordForCustomer(password, email);
+    
     if (givenCustomer && correctPassword){
-        return createCustomerToken(customer);
+        const token = createCustomerToken(givenCustomer);
+        return token;
     }
     return null;
 }

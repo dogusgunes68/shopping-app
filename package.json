@@ -6,10 +6,11 @@
   "main": "index.js",
   "scripts": {
     "migrate": "npx knex migrate:latest --knexfile src/database/knexfile.ts",
+    "migrate-linux": "npx knex migrate:latest --knexfile ./src/database/knexfile.ts",
     "build": "npx tsc",
     "seed": "npx knex seed:run --knexfile src/database/knexfile.ts",
     "start": "tsc && node dist/index.js",
-    "dev": "tsc && nodemon src/index.ts",
+    "dev": "npx knex migrate:latest --knexfile src/database/knexfile.ts && tsc && nodemon src/index.ts",
     "test": "jest"
   },
   "keywords": [],

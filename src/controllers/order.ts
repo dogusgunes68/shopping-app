@@ -4,7 +4,7 @@ import { buildResponse } from "../services/http";
 
 export async function createOrderController(req: Request, res: Response): Promise<void> {
     try {
-        const id = await createOrder({ customer_id: req.headers.customer_id, ...req.body});
+        const id = await createOrder({ customer_id: req.headers.id, ...req.body});
         const response = buildResponse({
             message: "Order created successfully",
             data: {

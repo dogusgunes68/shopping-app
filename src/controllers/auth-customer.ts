@@ -3,7 +3,7 @@ import { buildAuthResponse, buildResponse } from '../services/http';
 import { loginCustomer, registerCustomer } from '../services/auth-customer';
 export async function loginCustomerController(req: Request, res: Response): Promise<void> {
     try {
-        const token = await loginCustomer(req.body);
+        const token = await loginCustomer(req.body);        
         if (!token) {
             const response = buildAuthResponse({
                 success: false,
@@ -30,7 +30,7 @@ export async function registerCustomerController(req: Request, res: Response): P
     try {
         const id = await registerCustomer(req.body);
         const response = buildResponse({
-            message:"Admin registration successfully",
+            message:"Customer registration successfully",
             data: {
                 customerId: id,
             }

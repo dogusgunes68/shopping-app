@@ -2,9 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const customer_1 = require("../controllers/customer");
 const requireAdmin_1 = require("../middlewares/requireAdmin");
+const requireCustomer_1 = require("../middlewares/requireCustomer");
 const validateBody_1 = require("../middlewares/validateBody");
 const validate_customer_body_1 = require("../validation/validate-customer-body");
 const express = require("express");
 const router = express.Router();
 router.post("/", (0, validateBody_1.validateBody)(validate_customer_body_1.customerValidation), requireAdmin_1.requireAdmin, customer_1.createCustomerController);
+router.get("/customer-orders", requireCustomer_1.requireCustomer, customer_1.listOrdersController);
+router.get("/customer-order/:id", requireCustomer_1.requireCustomer, customer_1.getDetailsOfOrderController);
 exports.default = router;

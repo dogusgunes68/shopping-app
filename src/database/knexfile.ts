@@ -7,12 +7,12 @@ import { Knex } from "knex";
 
 const knexConfig: Record<string, Knex.Config> = {
   development: {
-    client: "postgresql",
+    client: "pg",
     connection: {
       database: "shopping",
       user: "root",
       password: "root",
-      host: "localhost",
+      host: "db",
       port: 5432,
     },
     pool: {
@@ -20,6 +20,7 @@ const knexConfig: Record<string, Knex.Config> = {
       max: 10,
     },
     migrations: {
+      directory: "./migrations/",
       tableName: "knex_migrations",
     },
   },

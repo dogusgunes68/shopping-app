@@ -23,7 +23,7 @@ export async function createCustomerController(req: Request, res: Response): Pro
 
 export async function listOrdersController(req: Request, res: Response): Promise<void> {
   try {
-    const { id } = req.cookies;
+    const { id } = req.headers;
       const rows = await listOrders(id);
       const response = buildResponse({
           message:"Orders retrieved successfully",
@@ -46,7 +46,7 @@ export async function listOrdersController(req: Request, res: Response): Promise
 
 export async function getDetailsOfOrderController(req: Request, res: Response): Promise<void> {
   try {
-    const { id } = req.cookies;
+      const id = req.headers.id;
       const order = await getDetailsOfOrder(parseInt(req.params.id), id);
       const response = buildResponse({
           message: `Order with id ${req.params.id} retrieved successfully`,

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCustomerController = void 0;
+exports.getDetailsOfOrderController = exports.listOrdersController = exports.createCustomerController = void 0;
 const customer_1 = require("../services/customer");
 const http_1 = require("../services/http");
 function createCustomerController(req, res) {
@@ -35,3 +35,49 @@ function createCustomerController(req, res) {
 }
 exports.createCustomerController = createCustomerController;
 ;
+function listOrdersController(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.cookies;
+            const rows = yield (0, customer_1.listOrders)(id);
+            const response = (0, http_1.buildResponse)({
+                message: "Orders retrieved successfully",
+                data: {
+                    rows,
+                }
+            });
+            res.status(200).json(response);
+        }
+        catch (error) {
+            const response = (0, http_1.buildResponse)({
+                success: false,
+                message: error.message
+            });
+            res.status(500).json(response);
+        }
+    });
+}
+exports.listOrdersController = listOrdersController;
+function getDetailsOfOrderController(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { id } = req.cookies;
+            const order = yield (0, customer_1.getDetailsOfOrder)(parseInt(req.params.id), id);
+            const response = (0, http_1.buildResponse)({
+                message: `Order with id ${req.params.id} retrieved successfully`,
+                data: {
+                    order,
+                }
+            });
+            res.status(200).json(response);
+        }
+        catch (error) {
+            const response = (0, http_1.buildResponse)({
+                success: false,
+                message: error.message
+            });
+            res.status(500).json(response);
+        }
+    });
+}
+exports.getDetailsOfOrderController = getDetailsOfOrderController;

@@ -10,6 +10,4 @@ const validateBody_1 = require("../middlewares/validateBody");
 const validate_order_body_1 = require("../validation/validate-order-body");
 const router = express_1.default.Router();
 router.post("/", (0, validateBody_1.validateBody)(validate_order_body_1.orderValidation), requireCustomer_1.requireCustomer, order_1.createOrderController);
-router.get("/", order_1.listOrdersController);
-router.get("/:id", order_1.getDetailsOfOrderController);
 exports.default = router;

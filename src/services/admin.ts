@@ -3,7 +3,7 @@ import { Admin } from "../models/admin";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../utils/helper";
 
-export async function createAdmin(admin: Admin): Promise<Admin> {
+export async function createAdmin(admin: Admin): Promise<number[]> {
     const { email, password, role} = admin;
     const hashedPass = await hashPassword(password);
     const [id] = await db("admin").insert({

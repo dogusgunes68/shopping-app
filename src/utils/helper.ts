@@ -10,12 +10,8 @@ export const hashPassword = async function (password: string): Promise<string> {
 };
 
 export async function verifyToken(token: string): Promise<any> {
-  jwt.verify(token, config.jwt_secret, function(err, decoded) {
-    if (err) {
-      return null;
-    }
-    return decoded;
-  });
+  const decoded = jwt.verify(token, config.jwt_secret);
+  return decoded;
 }
 
 export function isObject(obj: any): boolean {

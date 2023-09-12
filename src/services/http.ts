@@ -40,7 +40,7 @@ export function buildAuthResponse(options: any){
             response.message = options.message;
         }
 
-        if(isString(options.data)){
+        if(isString(options.token)){
             response.token = options.token;
         }
     }

@@ -12,9 +12,11 @@ function createAdminToken(admin: Admin){
 export async function loginAdmin(admin: Admin){
     const { email, password } = admin;
     const givenAdmin = await getAdmin(email);
+    
     const correctPassword = await checkPasswordForAdmin(password, email);
-    if (givenAdmin && correctPassword){
-        return createAdminToken(admin);
+    if (givenAdmin && correctPassword){        
+        const token = createAdminToken(givenAdmin);
+        return token;
     }
     return null;
 }

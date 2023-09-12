@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { createCustomer, getDetailsOfOrder, listOrders } from "../services/customer";
 import { buildResponse } from "../services/http";
+import { createLog } from "../services/log";
+import { Log } from "../models/log";
 
 export async function createCustomerController(req: Request, res: Response): Promise<void> {
   try {
@@ -10,7 +12,7 @@ export async function createCustomerController(req: Request, res: Response): Pro
       data: {
         customerId: id,
       }
-    })
+    });
     res.status(201).json(response)
   } catch (error: any) {
     const response = buildResponse({
@@ -22,8 +24,9 @@ export async function createCustomerController(req: Request, res: Response): Pro
 };
 
 export async function listOrdersController(req: Request, res: Response): Promise<void> {
+  
   try {
-    const { id } = req.headers;
+      const { id } = req.headers;
       const rows = await listOrders(id);
       const response = buildResponse({
           message:"Orders retrieved successfully",
@@ -31,6 +34,13 @@ export async function listOrdersController(req: Request, res: Response): Promise
               rows,
           }
       });
+      const log: Log ={
+        user_id: id,
+        request_type: "GET",
+        request_url: "/orders/customer-orders",
+        date: new Date()
+      }
+      await createLog(log);
       res.status(200).json(response);
   } catch (error: any) {
 
@@ -38,6 +48,7 @@ export async function listOrdersController(req: Request, res: Response): Promise
           success: false,
           message: error.message
       });
+      
 
       res.status(500).json(response);
       
@@ -60,6 +71,13 @@ export async function getDetailsOfOrderController(req: Request, res: Response): 
               order,
           }
         });
+        const log: Log ={
+          user_id: id,
+          request_type: "GET",
+          request_url: "/orders/customer-order/:id",
+          date: new Date()
+        }
+        await createLog(log);
         res.status(200).json(response);
       }
    

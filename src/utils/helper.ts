@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { Admin } from "../models/admin";
 import jwt_decode from "jwt-decode";
 import config from "../config/auth";
+import { Log } from "../models/log";
 
 export const hashPassword = async function (password: string): Promise<string> {
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,3 +26,4 @@ export function isString(obj: any): boolean {
 export function isBoolean(obj: any): boolean {
   return (obj !== null && obj !== undefined && typeof obj === "boolean" && !Array.isArray(obj))
 }
+

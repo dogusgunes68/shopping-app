@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { createOrder } from "../services/order";
 import { buildResponse } from "../services/http";
+import { Log } from "../models/log";
+import { createLog } from "../services/log";
 
 export async function createOrderController(req: Request, res: Response): Promise<void> {
     try {
@@ -11,6 +13,14 @@ export async function createOrderController(req: Request, res: Response): Promis
                 orderId: id
             }
         });
+
+        const log: Log ={
+            user_id: req.headers.id,
+            request_type: "GET",
+            request_url: "/orders/customer-orders",
+            date: new Date()
+          }
+        await createLog(log);
 
         res.status(201).json(response);
     } catch (error: any) {

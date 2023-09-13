@@ -12,6 +12,16 @@ describe('product', () => {
             });
         });
     });
+
+    // Update a product
+    describe("update a product", () => {
+        describe("not found", ()=> {
+            it("should return a 404 code", async () => {
+                const productId = 10000000000;
+              await request(app).post(`/products/${productId}`).expect(404);
+            });
+        });
+    });
 });
 
 

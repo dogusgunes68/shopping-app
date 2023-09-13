@@ -46,6 +46,17 @@ describe('customer', () => {
         await request(app).get(`/customers/customer-order/${orderId}`).expect(403);
       });
     });
+
+    describe("Not found", ()=>{
+      it("should return a 404 code", async () => {
+        const orderId = 100000000000;
+        const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiZGVuZW1lIiwic3VybmFtZSI6ImRlbmVtZSIsImVtYWlsIjoiZGVuZW1lOEBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJElhOC8zelpGVDM5Y2FkMW9talBwa09KUS9GY0J5elNJTmppN0JjcC5WZnlPVm5seHpIZnpPIiwicm9sZSI6InVzZXIiLCJjcmVhdGVkX2F0IjoiMjAyMy0wOS0xM1QxNzowODo0NC4zMDdaIiwidXBkYXRlZF9hdCI6IjIwMjMtMDktMTNUMTc6MDg6NDQuMzA3WiJ9LCJpYXQiOjE2OTQ2MjQ5MzgsImV4cCI6MjU1ODYyNDkzOH0.5jq4sTAAzHkrmon9fwxoT-_HB8a23SmhCsWzi8liRaI";
+        await request(app).get(`/customers/customer-order/${orderId}`).set('Authorization', 'Bearer ' + token) 
+        expect(404);
+
+
+      });
+    })
   });
 
 });

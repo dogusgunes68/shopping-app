@@ -20,9 +20,9 @@ export async function createOrderController(req: Request, res: Response): Promis
             request_url: "/orders",
             date: new Date()
           }
-        await createLog(log);
-
-        res.status(201).json(response);
+          
+          await createLog(log);
+          res.status(201).json(response);
     } catch (error: any) {
         const response = buildResponse({
             success: false,

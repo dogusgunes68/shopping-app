@@ -35,7 +35,7 @@ function buildAuthResponse(options) {
         if ((0, helper_1.isString)(options.message)) {
             response.message = options.message;
         }
-        if ((0, helper_1.isString)(options.data)) {
+        if ((0, helper_1.isString)(options.token)) {
             response.token = options.token;
         }
     }

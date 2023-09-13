@@ -27,7 +27,8 @@ function loginCustomer(customer) {
         const givenCustomer = yield (0, customer_1.getCustomer)(email);
         const correctPassword = yield (0, customer_1.checkPasswordForCustomer)(password, email);
         if (givenCustomer && correctPassword) {
-            return createCustomerToken(customer);
+            const token = createCustomerToken(givenCustomer);
+            return token;
         }
         return null;
     });

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDetailsOfOrderController = exports.listOrdersController = exports.createCustomerController = void 0;
 const customer_1 = require("../services/customer");
 const http_1 = require("../services/http");
+const log_1 = require("../services/log");
 function createCustomerController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -38,7 +39,7 @@ exports.createCustomerController = createCustomerController;
 function listOrdersController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { id } = req.cookies;
+            const { id } = req.headers;
             const rows = yield (0, customer_1.listOrders)(id);
             const response = (0, http_1.buildResponse)({
                 message: "Orders retrieved successfully",
@@ -46,6 +47,13 @@ function listOrdersController(req, res) {
                     rows,
                 }
             });
+            const log = {
+                user_id: id,
+                request_type: "GET",
+                request_url: "/orders/customer-orders",
+                date: new Date()
+            };
+            yield (0, log_1.createLog)(log);
             res.status(200).json(response);
         }
         catch (error) {
@@ -61,15 +69,30 @@ exports.listOrdersController = listOrdersController;
 function getDetailsOfOrderController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { id } = req.cookies;
+            const id = req.headers.id;
             const order = yield (0, customer_1.getDetailsOfOrder)(parseInt(req.params.id), id);
-            const response = (0, http_1.buildResponse)({
-                message: `Order with id ${req.params.id} retrieved successfully`,
-                data: {
-                    order,
-                }
-            });
-            res.status(200).json(response);
+            if (!order) {
+                res.status(404).json((0, http_1.buildResponse)({
+                    success: true,
+                    message: "Order not found"
+                }));
+            }
+            else {
+                const response = (0, http_1.buildResponse)({
+                    message: `Order with id ${req.params.id} retrieved successfully`,
+                    data: {
+                        order,
+                    }
+                });
+                const log = {
+                    user_id: id,
+                    request_type: "GET",
+                    request_url: `/orders/customer-order/${req.params.id}`,
+                    date: new Date()
+                };
+                yield (0, log_1.createLog)(log);
+                res.status(200).json(response);
+            }
         }
         catch (error) {
             const response = (0, http_1.buildResponse)({

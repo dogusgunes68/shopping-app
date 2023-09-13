@@ -1,46 +1,34 @@
 import { Request, Response } from "express";
-import { createProduct, updateProduct } from "../services/product"; 
+import { createProduct, updateProduct } from "../services/product";
 import { buildResponse } from "../services/http";
+import tryCatch from "../utils/tryCatch";
+import { ApiError } from "../errors/ApiError";
 
-export async function createProductController(req: Request, res: Response): Promise<void> {
-    try {
-        const id = await createProduct(req.body);
-        const response = buildResponse({
-            message: "New Product created successfully",
-            data: {
-                productId: id,
-            }
-        })
-        res.status(201).json(response)
-    } catch (error: any) {                
-        const response = buildResponse({
-            success: false,
-            message: error.message,
-        })
+export const createProductController = tryCatch(
+  async (req: Request, res: Response) => {
+    const id = await createProduct(req.body);
+    const response = buildResponse({
+      message: "New Product created successfully",
+      data: {
+        productId: id,
+      },
+    });
+    res.status(201).json(response);
+  }
+);
 
-        res.status(500).json(response);
+export const updateProductController = tryCatch(
+  async (req: Request, res: Response) => {
+    const count = await updateProduct(
+      parseInt(req.params.id),
+      req.body.changes
+    );
+    if (count === 0) {
+      throw new ApiError(404, "Product not found");
     }
-}
-
-export async function updateProductController(req: Request, res: Response): Promise<void> {
-    try {
-        const count = await updateProduct(parseInt(req.params.id), req.body.changes);
-        if (count === 0) {
-            const response = buildResponse({
-                message: "Not found",
-            })
-            res.status(404).json(response);
-        }else {
-            const response = buildResponse({
-                message: `${count} row updated successfully`,
-            })
-            res.status(200).json(response);
-        }
-    } catch (error: any) {
-        const response = buildResponse({
-            success: false,
-            message: error.message,
-        })
-        res.status(500).json(response);
-    }
-}
+    const response = buildResponse({
+      message: `${count} row updated successfully`,
+    });
+    res.status(200).json(response);
+  }
+);

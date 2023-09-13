@@ -57,7 +57,7 @@ exports.listOrders = listOrders;
 function getDetailsOfOrder(orderId, customer_id) {
     return __awaiter(this, void 0, void 0, function* () {
         const order = yield (0, db_1.default)("order").select("*").where("id", orderId).andWhere("customer_id", customer_id);
-        return order;
+        return order[0];
     });
 }
 exports.getDetailsOfOrder = getDetailsOfOrder;

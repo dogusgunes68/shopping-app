@@ -39,8 +39,15 @@ function up(knex) {
             .createTable("order", (table) => {
             table.increments("id").primary();
             table.integer("count").defaultTo(1);
-            table.integer("product_id").references("id").inTable("product");
-            table.integer("customer_id").references("id").inTable("customer");
+            table.integer("product_id").notNullable().references("id").inTable("product");
+            table.integer("customer_id").notNullable().references("id").inTable("customer");
+        })
+            .createTable("logs", (table) => {
+            table.increments("id").primary();
+            table.integer("user_id").references("id").inTable("customer");
+            table.string("request_type").notNullable();
+            table.string("request_url").notNullable();
+            table.dateTime("date").notNullable();
         });
     });
 }

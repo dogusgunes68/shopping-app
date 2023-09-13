@@ -1,51 +1,49 @@
 import { ResponseModel } from "../models/response";
 import { AuthResponse } from "../models/response-auth";
-import { isBoolean, isObject, isString } from "../utils/helper"
+import { isBoolean, isObject, isString } from "../utils/helper";
 
-export function buildResponse(options: any): ResponseModel{
+export function buildResponse(options: any): ResponseModel {
+  const response: ResponseModel = {
+    success: true,
+    message: null,
+    data: {},
+  };
 
-    const response: ResponseModel = {
-        success: true,
-        message: null,
-        data : {}
+  if (isObject(options)) {
+    if (isBoolean(options.success)) {
+      response.success = options.success;
+    }
+    if (isString(options.message)) {
+      response.message = options.message;
     }
 
-    if(isObject(options)){
-        if(isBoolean(options.success)){
-            response.success = options.success;
-        }
-        if(isString(options.message)){
-            response.message = options.message;
-        }
-
-        if(isObject(options.data)){
-            response.data = options.data;
-        }
+    if (isObject(options.data)) {
+      response.data = options.data;
     }
+  }
 
-    return response;
+  return response;
 }
 
-export function buildAuthResponse(options: any): AuthResponse{
+export function buildAuthResponse(options: any): AuthResponse {
+  const response: AuthResponse = {
+    success: true,
+    message: null,
+    token: null,
+  };
 
-    const response: AuthResponse = {
-        success: true,
-        message: null,
-        token: null
+  if (isObject(options)) {
+    if (isBoolean(options.success)) {
+      response.success = options.success;
+    }
+    if (isString(options.message)) {
+      response.message = options.message;
     }
 
-    if(isObject(options)){
-        if(isBoolean(options.success)){
-            response.success = options.success;
-        }
-        if(isString(options.message)){
-            response.message = options.message;
-        }
-
-        if(isString(options.token)){
-            response.token = options.token;
-        }
+    if (isString(options.token)) {
+      response.token = options.token;
     }
+  }
 
-    return response;
+  return response;
 }

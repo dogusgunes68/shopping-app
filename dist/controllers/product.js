@@ -37,11 +37,19 @@ exports.createProductController = createProductController;
 function updateProductController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const count = yield (0, product_1.updateProduct)(req.body.id, req.body.changes);
-            const response = (0, http_1.buildResponse)({
-                message: `${count} row updated successfully`,
-            });
-            res.status(200).json(response);
+            const count = yield (0, product_1.updateProduct)(parseInt(req.params.id), req.body.changes);
+            if (count === 0) {
+                const response = (0, http_1.buildResponse)({
+                    message: "Not found",
+                });
+                res.status(404).json(response);
+            }
+            else {
+                const response = (0, http_1.buildResponse)({
+                    message: `${count} row updated successfully`,
+                });
+                res.status(200).json(response);
+            }
         }
         catch (error) {
             const response = (0, http_1.buildResponse)({

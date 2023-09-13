@@ -27,7 +27,8 @@ function loginAdmin(admin) {
         const givenAdmin = yield (0, admin_1.getAdmin)(email);
         const correctPassword = yield (0, admin_1.checkPasswordForAdmin)(password, email);
         if (givenAdmin && correctPassword) {
-            return createAdminToken(admin);
+            const token = createAdminToken(givenAdmin);
+            return token;
         }
         return null;
     });

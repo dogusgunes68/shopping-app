@@ -3,12 +3,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const knexConfig = {
     development: {
-        client: "postgresql",
+        client: "pg",
         connection: {
             database: "shopping",
             user: "root",
             password: "root",
-            host: "localhost",
+            host: "db",
             port: 5432,
         },
         pool: {
@@ -16,6 +16,7 @@ const knexConfig = {
             max: 10,
         },
         migrations: {
+            directory: "./migrations/",
             tableName: "knex_migrations",
         },
     },

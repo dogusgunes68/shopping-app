@@ -46,7 +46,7 @@ function registerCustomerController(req, res) {
         try {
             const id = yield (0, auth_customer_1.registerCustomer)(req.body);
             const response = (0, http_1.buildResponse)({
-                message: "Admin registration successfully",
+                message: "Customer registration successfully",
                 data: {
                     customerId: id,
                 }

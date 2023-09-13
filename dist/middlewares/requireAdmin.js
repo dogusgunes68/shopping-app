@@ -17,22 +17,31 @@ function requireAdmin(req, res, next) {
         if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
             const token = req.headers.authorization.split(" ")[1];
             // verify token and get admin data
-            const decoded = yield (0, helper_1.verifyToken)(token);
-            if (!decoded) {
-                return res.status(403).json((0, http_1.buildAuthResponse)({
-                    success: false,
-                    message: "Access denied",
-                }));
+            try {
+                const decoded = yield (0, helper_1.verifyToken)(token);
+                if (!decoded) {
+                    return res.status(403).json((0, http_1.buildAuthResponse)({
+                        success: false,
+                        message: "Access denied",
+                    }));
+                }
+                // check if role is admin
+                if (!decoded.user.role || decoded.user.role !== "admin") {
+                    console.log(decoded.user);
+                    return res.status(403).json((0, http_1.buildAuthResponse)({
+                        success: false,
+                        message: "Access denied for role",
+                    }));
+                }
+                next();
             }
-            // check if role is admin
-            if (!decoded.user.role || decoded.user.role !== "admin") {
-                return res.status(403).json((0, http_1.buildAuthResponse)({
+            catch (error) {
+                const response = (0, http_1.buildAuthResponse)({
                     success: false,
-                    message: "Access denied for role",
-                }));
+                    message: error.message,
+                });
+                res.status(403).json(response);
             }
-            console.log("decoded admin", decoded);
-            next();
         }
         else {
             const response = (0, http_1.buildResponse)({

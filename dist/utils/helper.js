@@ -25,12 +25,8 @@ const hashPassword = function (password) {
 exports.hashPassword = hashPassword;
 function verifyToken(token) {
     return __awaiter(this, void 0, void 0, function* () {
-        jsonwebtoken_1.default.verify(token, auth_1.default.jwt_secret, function (err, decoded) {
-            if (err) {
-                return null;
-            }
-            return decoded;
-        });
+        const decoded = jsonwebtoken_1.default.verify(token, auth_1.default.jwt_secret);
+        return decoded;
     });
 }
 exports.verifyToken = verifyToken;

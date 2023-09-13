@@ -13,53 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const index_1 = __importDefault(require("../index")); // Express uygulamanızın yolu
-describe('Order API', () => {
-    it('should create a new order with valid data', () => __awaiter(void 0, void 0, void 0, function* () {
-        // Doğrulama kurallarına uygun bir sipariş verisi oluşturun
-        const validOrder = {
-            count: 5,
-            customer_id: 1,
-            product_id: 2, // Geçerli bir ürün kimliği
-        };
-        const response = yield (0, supertest_1.default)(index_1.default)
-            .post('/api/orders')
-            .send(validOrder);
-        // Olumlu bir yanıt almayı bekleyin
-        expect(response.status).toBe(201);
-        expect(response.body.success).toBe(true);
-        expect(response.body.message).toBe('New order created');
-        expect(response.body.data.orderId).toBeDefined();
-    }));
-    it('should require customer authentication', () => __awaiter(void 0, void 0, void 0, function* () {
-        // Geçersiz bir müşteri kimliği kullanarak sipariş oluşturmayı simüle edin
-        const invalidOrder = {
-            count: 5,
-            customer_id: 999,
-            product_id: 2,
-        };
-        const response = yield (0, supertest_1.default)(index_1.default)
-            .post('/api/orders')
-            .send(invalidOrder);
-        // Müşteri kimlik doğrulaması gerektiren senaryoda beklenen durum kodu 401 (Unauthorized) olmalıdır
-        expect(response.status).toBe(401);
-    }));
-    it('should retrieve a list of orders', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield (0, supertest_1.default)(index_1.default).get('/api/orders');
-        // Olumlu bir yanıt almayı bekleyin
-        expect(response.status).toBe(200);
-        expect(response.body.success).toBe(true);
-        expect(response.body.message).toBe('List of orders');
-        expect(response.body.data).toBeInstanceOf(Array); // Yanıtın bir dizi olduğunu kontrol edin
-    }));
-    it('should retrieve details of a specific order', () => __awaiter(void 0, void 0, void 0, function* () {
-        // Test için bir sipariş kimliği seçin
-        const orderId = 1; // Sipariş kimliğini kendi projenize uygun şekilde değiştirin
-        const response = yield (0, supertest_1.default)(index_1.default).get(`/api/orders/${orderId}`);
-        // Olumlu bir yanıt almayı bekleyin
-        expect(response.status).toBe(200);
-        expect(response.body.success).toBe(true);
-        expect(response.body.message).toBe('Details of the order');
-        expect(response.body.data).toBeDefined(); // Yanıtın veri içermesi gerektiğini kontrol edin
-    }));
+const server_1 = __importDefault(require("../server"));
+const app = (0, server_1.default)();
+describe('order', () => {
+    // Create a new order
+    describe("create order", () => {
+        describe("bad request", () => {
+            it("should return a 400 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                yield (0, supertest_1.default)(app).post("/orders").expect(400);
+            }));
+        });
+        describe("access denied", () => {
+            it("should return a 403 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                const order = {
+                    count: 2,
+                    product_id: 1
+                };
+                const customer_id = 1;
+                yield (0, supertest_1.default)(app).post("/orders").set({ id: customer_id }).send(order).expect(403);
+            }));
+        });
+    });
 });

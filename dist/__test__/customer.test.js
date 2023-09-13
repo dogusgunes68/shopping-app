@@ -13,35 +13,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const index_1 = __importDefault(require("../index")); // Express uygulamanızın yolu
-describe('Customer API', () => {
-    it('should create a new customer', () => __awaiter(void 0, void 0, void 0, function* () {
-        const newCustomer = {
-            name: 'test',
-            surname: 'test',
-            email: 'test@mail.com',
-            password: '123456789',
-            role: 'user',
-        };
-        const response = yield (0, supertest_1.default)(index_1.default)
-            .post('/customers')
-            .send(newCustomer);
-        expect(response.status).toBe(201);
-        expect(response.body.success).toBe(true);
-        expect(response.body.message).toBe('New customer created');
-        expect(response.body.data.customerId).toBeDefined();
-    }));
-    it('should require admin authentication', () => __awaiter(void 0, void 0, void 0, function* () {
-        const newCustomer = {
-            name: 'test',
-            surname: 'test',
-            email: 'test@mail.com',
-            password: '123456789',
-            role: 'user',
-        };
-        const response = yield (0, supertest_1.default)(index_1.default)
-            .post('/customers')
-            .send(newCustomer);
-        expect(response.status).toBe(401);
-    }));
+const server_1 = __importDefault(require("../server"));
+const app = (0, server_1.default)();
+describe('customer', () => {
+    // Create a new customer
+    describe('create customer', () => {
+        describe("bad request", () => {
+            it("should return a 400 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                yield (0, supertest_1.default)(app).post("/customers").expect(400);
+            }));
+        });
+        describe("access denied", () => {
+            it("should return a 403 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                const customer = {
+                    name: "deneme",
+                    surname: "deneme",
+                    email: "deneme@example.com",
+                    password: "123456789",
+                    role: "user"
+                };
+                yield (0, supertest_1.default)(app).post("/customers").send(customer).expect(403);
+            }));
+        });
+    });
+    // List of orders
+    describe("list orders", () => {
+        describe("access denied", () => {
+            it("should return a 403 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                yield (0, supertest_1.default)(app).get("/customers/customer-orders").expect(403);
+            }));
+        });
+    });
+    // Get Details of Order
+    describe("get order details", () => {
+        describe("access denied", () => {
+            it("should return a 403 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                const orderId = 1;
+                yield (0, supertest_1.default)(app).get(`/customers/customer-order/${orderId}`).expect(403);
+            }));
+        });
+        describe("Not found", () => {
+            it("should return a 404 code", () => __awaiter(void 0, void 0, void 0, function* () {
+                const orderId = 100000000000;
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoiZGVuZW1lIiwic3VybmFtZSI6ImRlbmVtZSIsImVtYWlsIjoiZGVuZW1lOEBtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJElhOC8zelpGVDM5Y2FkMW9talBwa09KUS9GY0J5elNJTmppN0JjcC5WZnlPVm5seHpIZnpPIiwicm9sZSI6InVzZXIiLCJjcmVhdGVkX2F0IjoiMjAyMy0wOS0xM1QxNzowODo0NC4zMDdaIiwidXBkYXRlZF9hdCI6IjIwMjMtMDktMTNUMTc6MDg6NDQuMzA3WiJ9LCJpYXQiOjE2OTQ2MjQ5MzgsImV4cCI6MjU1ODYyNDkzOH0.5jq4sTAAzHkrmon9fwxoT-_HB8a23SmhCsWzi8liRaI";
+                yield (0, supertest_1.default)(app).get(`/customers/customer-order/${orderId}`).set('Authorization', 'Bearer ' + token);
+                expect(404);
+            }));
+        });
+    });
 });

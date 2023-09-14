@@ -4,14 +4,16 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 import { Knex } from "knex";
+import dotenv from "dotenv";
+dotenv.config();
 
 const knexConfig: Record<string, Knex.Config> = {
   development: {
     client: "pg",
     connection: {
-      database: "shopping",
-      user: "root",
-      password: "root",
+      database: process.env.DB_NAME || "shopping",
+      user: process.env.DB_USER || "root",
+      password: process.env.DB_PASSWORD || "root",
       host: "db",
       port: 5432,
     },

@@ -30,6 +30,10 @@ services:
       context: .
     ports:
       - "4001:4001"
+    environment:
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: shopping
     volumes:
       - ./src/database/migrations:/app/migrations
     depends_on:
